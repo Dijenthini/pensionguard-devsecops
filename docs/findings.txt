@@ -1,0 +1,31 @@
+# VULNERABILITY FINDINGS - NODEGOAT BASELINE
+# Date: 2026-09-06
+# Commit: [paste the commit hash from git rev-parse HEAD]
+
+## Vulnerability 1: Server-Side JavaScript Injection (eval)
+- File: routes/contributions.js
+- Code: eval('(' + req.body.calculation + ')')
+- Impact: Arbitrary code execution on the server
+- Exploit: {"calculation": "require('child_process').execSync('echo HACKED')"}
+- Fix: Replace eval with safe expression parser
+
+## Vulnerability 2: Stored XSS (Cross-Site Scripting)
+- File: routes/profile.js
+- Code: doc.website = ESAPI.encoder().encodeForHTML(doc.website)
+- Impact: XSS in URL context, script execution in user's browser
+- Exploit: javascript:alert('XSS')
+- Fix: Use context-appropriate URL encoding instead of HTML encoding
+
+## Vulnerability 3: Broken Access Control (IDOR)
+- File: routes/allocations.js
+- Code: const { userId } = req.params;  // Takes ID from URL
+- Impact: Any logged-in user can access any other user's allocations
+- Exploit: Change userId in URL: /allocations/1 → /allocations/2
+- Fix: Use userId from session: const { userId } = req.session;
+
+## Vulnerability 4: NoSQL Injection
+- File: data/allocations-dao.js
+- Code: return { $where: `this.userId == ${parsedUserID} && this.stocks > ${threshold}` };
+- Impact: NoSQL injection, arbitrary JavaScript execution
+- Exploit: threshold=1'; while(true){} // (Denial of Service)
+- Fix: Validate threshold is a number between 0-99
