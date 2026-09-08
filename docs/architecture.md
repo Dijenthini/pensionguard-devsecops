@@ -100,3 +100,12 @@
 2. Application → Database (query sanitization)
 
 **Data flows in both directions** between all components, requiring security controls at each boundary.
+
+
+## Container Hardening Summary
+| Control | Status |
+|---------|--------|
+| Non-root user | ✅ Applied |
+| Minimal image | ✅ Applied |
+| Database internal | ✅ Applied |
+| Resource limits | ✅ Applied |
