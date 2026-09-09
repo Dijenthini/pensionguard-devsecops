@@ -2,6 +2,15 @@
 # Date: 2026-09-07
 # Created by: Member 2
  
+## Vulnerability Evidence Mapping
+
+| Threat | Vulnerability File | Evidence Screenshot |
+|--------|-------------------|---------------------|
+| T2 - NoSQL Injection | data/allocations-dao.js | EVID-16 |
+| T3 - Stored XSS | routes/profile.js | EVID-14 |
+| T5 - IDOR | routes/allocations.js | EVID-15 |
+| T8 - Broken Access Control | routes/benefits.js | EVID-17 |
+
 ## STRIDE Categories
 - **S** - Spoofing (pretending to be someone else)
 - **T** - Tampering (modifying data)
@@ -41,7 +50,7 @@
 - **Likelihood:** 4 (Likely)
 - **Impact:** 5 (Severe)
 - **Risk Score:** 20 (HIGH)
- 
+ - **Evidence:** EVID-16-vuln2-nosql-exploit.png (Exploit demonstrated by Member 3)
 ---
  
 ## Threat #3: Stored XSS (Tampering)
@@ -57,7 +66,7 @@
 - **Likelihood:** 3 (Possible)
 - **Impact:** 3 (Moderate)
 - **Risk Score:** 9 (MEDIUM)
- 
+ - **Evidence:** EVID-14-vuln2-xss-exploit.png (Exploit demonstrated by Member 3)
 ---
  
 ## Threat #4: No Audit Logs (Repudiation)
@@ -89,7 +98,7 @@
 - **Likelihood:** 4 (Likely)
 - **Impact:** 4 (Major)
 - **Risk Score:** 16 (HIGH)
- 
+ *Evidence:* EVID-15-vuln3-idor-exploit.png (Exploit demonstrated by Member 3)
 ---
  
 ## Threat #6: Error Message Disclosure (Information Disclosure)
@@ -137,3 +146,4 @@
 - **Likelihood:** 3 (Possible)
 - **Impact:** 4 (Major)
 - **Risk Score:** 12 (HIGH)
+- **Evidence:** EVID-17-vuln5-benefits-access.png (Exploit demonstrated by Member 3)
