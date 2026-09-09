@@ -6,10 +6,14 @@
 
 | Threat | Vulnerability File | Evidence Screenshot |
 |--------|-------------------|---------------------|
-| T2 - NoSQL Injection | data/allocations-dao.js | EVID-16 |
+| T1 - Weak Authentication | routes/auth.js | Pending |
+| T2 - Broken Access Control (Benefits) | routes/benefits.js | EVID-17 |
 | T3 - Stored XSS | routes/profile.js | EVID-14 |
+| T4 - No Audit Logs | Middleware | Pending |
 | T5 - IDOR | routes/allocations.js | EVID-15 |
-| T8 - Broken Access Control | routes/benefits.js | EVID-17 |
+| T6 - Error Disclosure | routes/error.js | Pending |
+| T7 - DoS | Middleware | Pending |
+| T8 - Broken Access Control (IDOR) | routes/allocations.js | EVID-15 |
 
 ## STRIDE Categories
 - **S** - Spoofing (pretending to be someone else)
@@ -37,20 +41,19 @@
  
 ---
  
-## Threat #2: NoSQL Injection (Tampering)
-- **STRIDE Category:** T (Tampering)
-- **Scenario:** Attacker injects malicious MongoDB query to bypass authentication or access data
-- **Attacker:** External attacker or authenticated user
-- **Entry Point:** Login form, allocations API
-- **Affected Component:** Database queries (`data/allocations-dao.js`)
-- **Protected Asset:** All database data
-- **Existing Weakness:** User input inserted directly into `$where` queries
-- **Proposed Control:** Parameterized queries, input validation, sanitization
-- **Control Location:** `data/allocations-dao.js` (Member 3's fix)
-- **Likelihood:** 4 (Likely)
-- **Impact:** 5 (Severe)
-- **Risk Score:** 20 (HIGH)
- - **Evidence:** EVID-16-vuln2-nosql-exploit.png (Exploit demonstrated by Member 3)
+## Threat #2: Broken Access Control - Benefits Page (Elevation of Privilege)
+- *STRIDE Category:* E (Elevation of Privilege)
+- *Scenario:* A regular user accesses the admin-only Benefits page by directly typing /benefits in the URL
+- *Attacker:* Authenticated regular user (user1, user2)
+- *Entry Point:* /benefits URL
+- *Affected Component:* routes/benefits.js
+- *Asset at Risk:* Employee benefits data (start dates, employee IDs)
+- *Weakness:* No server-side role check — only hidden from menu, not protected
+- *Proposed Control:* Role-Based Access Control (RBAC), server-side authorization check
+- *Likelihood:* 3 (Possible)
+- *Impact:* 3 (Moderate)
+- *Risk Score:* 9 (MEDIUM)
+- **Evidence:** EVID-17-vuln5-benefits-access.png (Exploit demonstrated by Member 3)
 ---
  
 ## Threat #3: Stored XSS (Tampering)
@@ -66,7 +69,7 @@
 - **Likelihood:** 3 (Possible)
 - **Impact:** 3 (Moderate)
 - **Risk Score:** 9 (MEDIUM)
- - **Evidence:** EVID-14-vuln2-xss-exploit.png (Exploit demonstrated by Member 3)
+- **Evidence:** EVID-14-vuln2-xss-exploit.png (Exploit demonstrated by Member 3)
 ---
  
 ## Threat #4: No Audit Logs (Repudiation)
@@ -133,17 +136,17 @@
  
 ---
  
-## Threat #8: Broken Access Control (Elevation of Privilege)
-- **STRIDE Category:** E (Elevation of Privilege)
-- **Scenario:** Regular user accesses admin-only benefits page via direct URL
-- **Attacker:** Authenticated regular user
-- **Entry Point:** `/benefits` URL
-- **Affected Component:** Authorization system (`routes/benefits.js`)
-- **Protected Asset:** Admin functions
-- **Existing Weakness:** No role check on server
-- **Proposed Control:** RBAC, server-side authorization
-- **Control Location:** `routes/benefits.js`
-- **Likelihood:** 3 (Possible)
-- **Impact:** 4 (Major)
-- **Risk Score:** 12 (HIGH)
-- **Evidence:** EVID-17-vuln5-benefits-access.png (Exploit demonstrated by Member 3)
+## Threat #8: IDOR - Allocations Access (Information Disclosure)
+- *STRIDE Category:* I (Information Disclosure)
+- *Scenario:* User changes URL parameter to access another user's allocations
+- *Attacker:* Authenticated user
+- *Entry Point:* /allocations/:userId URL
+- *Affected Component:* routes/allocations.js
+- *Asset at Risk:* Other users' financial data
+- *Weakness:* No ownership check
+- *Proposed Control:* Server-side authorization (session ID)
+- *Likelihood:* 4 (Likely)
+- *Impact:* 4 (Major)
+- *Risk Score:* 16 (HIGH)
+- **Evidence:** EVID-15-vuln3-idor-exploit.png (Exploit demonstrated by Member 3)
+---

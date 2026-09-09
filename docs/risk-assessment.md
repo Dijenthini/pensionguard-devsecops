@@ -12,18 +12,18 @@
 | 2 - Minor | 2 | 4 | 6 | 8 | 10 |
 | 1 - Negligible | 1 | 2 | 3 | 4 | 5 |
  
-## Threat Risk Scores
- 
-| Threat ID | Threat Name | Likelihood | Impact | Risk Score | Level |
-|-----------|-------------|------------|--------|------------|-------|
-| T1 | Weak Authentication | 3 | 4 | 12 | HIGH |
-| T2 | NoSQL Injection | 4 | 5 | 20 | HIGH |
-| T3 | Stored XSS | 3 | 3 | 9 | MEDIUM |
-| T4 | No Audit Logs | 3 | 2 | 6 | MEDIUM |
-| T5 | IDOR | 4 | 4 | 16 | HIGH |
-| T6 | Error Disclosure | 2 | 2 | 4 | MEDIUM |
-| T7 | Denial of Service | 2 | 3 | 6 | MEDIUM |
-| T8 | Broken Access Control | 3 | 4 | 12 | HIGH |
+## Treat Risk Scores
+
+| Threat | Likelihood | Impact | Score | Level |
+|--------|------------|--------|-------|-------|
+| T1 - Weak Authentication | 3 | 4 | 12 | HIGH |
+| T2 - Broken Access Control (Benefits) | 3 | 3 | 9 | MEDIUM |
+| T3 - Stored XSS | 3 | 3 | 9 | MEDIUM |
+| T4 - No Audit Logs | 3 | 2 | 6 | MEDIUM |
+| T5 - IDOR | 4 | 4 | 16 | HIGH |
+| T6 - Error Disclosure | 2 | 2 | 4 | MEDIUM |
+| T7 - DoS | 2 | 3 | 6 | MEDIUM |
+| T8 - IDOR (Allocations) | 4 | 4 | 16 | HIGH |
  
 ## Risk Level Classification
  
@@ -35,10 +35,9 @@
 | **LOW** | 1-4 | Acceptable risk, monitor |
  
 ## Summary
- 
 | Level | Count | Threats |
 |-------|-------|---------|
-| CRITICAL | 1 | T2 - NoSQL Injection |
-| HIGH | 3 | T1, T5, T8 |
-| MEDIUM | 4 | T3, T4, T6, T7 |
-| LOW | 0 | None |
+| CRITICAL (20-25) | 0 | None |
+| HIGH (12-19) | 3 | T1, T5, T8 |
+| MEDIUM (5-11) | 4 | T2, T3, T4, T7 |
+| LOW (1-4) | 1 | T6 |
