@@ -11,6 +11,9 @@ function BenefitsHandler(db) {
     const benefitsDAO = new BenefitsDAO(db);
 
     this.displayBenefits = (req, res, next) => {
+        if (!req.session.user || req.session.user.username !== 'admin') {
+            return res.status(403).send('Access denied. Admin only.');
+        }
 
         benefitsDAO.getAllNonAdminUsers((error, users) => {
 
@@ -27,6 +30,9 @@ function BenefitsHandler(db) {
     };
 
     this.updateBenefits = (req, res, next) => {
+        if (!req.session.user || req.session.user.username !== 'admin') {
+            return res.status(403).send('Access denied. Admin only.');
+        }
         const {
             userId,
             benefitStartDate

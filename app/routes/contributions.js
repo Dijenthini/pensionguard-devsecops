@@ -29,9 +29,20 @@ function ContributionsHandler(db) {
 
         /*jslint evil: true */
         // Insecure use of eval() to parse inputs
-        const preTax = eval(req.body.preTax);
-        const afterTax = eval(req.body.afterTax);
-        const roth = eval(req.body.roth);
+        function safeParseNumber(value) {
+            const num = parseFloat(value);
+            if (isNaN(num) || !isFinite(num)) {
+                return null;
+            }
+            return num;
+        }
+        const preTax = safeParseNumber(req.body.preTax);
+        const afterTax = safeParseNumber(req.body.afterTax);
+        const roth = safeParseNumber(req.body.roth);
+
+        if (preTax === null || afterTax === null || roth === null) {
+            return res.status(400).send('Invalid contribution percentages');
+        }
 
         /*
         //Fix for A1 -1 SSJS Injection attacks - uses alternate method to eval
