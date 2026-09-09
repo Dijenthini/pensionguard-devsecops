@@ -35,6 +35,41 @@ The PensionGuard application (OWASP NodeGoat) was analyzed using the STRIDE thre
 | Weak Authentication | Rate limiting | routes/auth.js |
 | Error Disclosure | Custom error handling | routes/error.js |
 
+## OWASP Top 10:2025 Mapping
+
+The identified threats were mapped to OWASP Top 10:2025 categories:
+
+| OWASP Category | Threats | Controls |
+|----------------|---------|----------|
+| A01: Broken Access Control | T2, T5, T8 | RBAC, session auth |
+| A03: Injection | T3 | Output encoding |
+| A05: Security Misconfiguration | T6, T7 | Error handling, rate limiting |
+| A07: Identification Failures | T1 | Rate limiting, strong passwords |
+| A09: Security Logging Failures | T4 | Audit logging |
+
+---
+
+## Risk Treatment Summary
+
+| Action | Threats |
+|--------|---------|
+| Mitigated (Applied) | T2, T3, T5, T8 |
+| Planned (Pending) | T1, T4, T6, T7 |
+| Accepted | None |
+
+---
+
+## Threat Model Conclusion
+
+The threat modeling exercise identified eight threats across six STRIDE categories and five OWASP Top 10:2025 categories. The highest priority threats (Critical and High) have been addressed through secure coding fixes (Member 3). Remaining Medium-level threats will be addressed through pipeline controls.
+
+Key improvements:
+- ✅ RBAC implemented for benefits page
+- ✅ Output encoding for XSS prevention
+- ✅ Session-based authorization for allocations
+- ⏳ Rate limiting (planned)
+- ⏳ Audit logging (planned)
+
 ## Conclusion
 
 The threat modeling exercise identified eight threats requiring mitigation. The highest priority threats (Critical and High) have been addressed through secure coding fixes implemented by Member 3. Remaining Medium-level threats will be addressed through pipeline controls and future improvements.
