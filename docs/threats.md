@@ -101,7 +101,7 @@
 - **Likelihood:** 4 (Likely)
 - **Impact:** 4 (Major)
 - **Risk Score:** 16 (HIGH)
- *Evidence:* EVID-15-vuln3-idor-exploit.png (Exploit demonstrated by Member 3)
+- **Evidence:** EVID-15-vuln3-idor-exploit.png (Exploit demonstrated by Member 3)
 ---
  
 ## Threat #6: Error Message Disclosure (Information Disclosure)
