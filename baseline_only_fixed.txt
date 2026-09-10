@@ -1,0 +1,96 @@
+
+┌──── ○○○ ────┐
+│ Semgrep CLI │
+└─────────────┘
+
+⠧ Loading rules from registry...                                                                                                                       
+Scanning 4 files (only git-tracked) with:
+                                      
+✔ Semgrep OSS
+  ✔ Basic security coverage for first-party code vulnerabilities.
+                                              
+✘ Semgrep Code (SAST)
+  ✘ Find and fix vulnerabilities in the code you write with advanced scanning and expert security rules.
+                                                     
+✘ Semgrep Supply Chain (SCA)
+  ✘ Find and fix the reachable vulnerabilities in your OSS dependencies.
+                                                                            
+💎 Get started with all Semgrep products via `semgrep login`.
+✨ Learn more at https://sg.run/cloud.                        
+                                                                            
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00                                                                                                                        
+                   
+                   
+┌─────────────────┐
+│ 6 Code Findings │
+└─────────────────┘
+                                              
+    app\routes\contributions.js
+    ❯❱ javascript.browser.security.eval-detected.eval-detected
+          ❰❰ Blocking ❱❱
+          Detected the use of eval(). eval() can be dangerous if used to evaluate dynamic content. If this 
+          content can be input from outside the program, this may be a code injection vulnerability. Ensure
+          evaluated content is not definable by external sources.                                          
+          Details: https://sg.run/7ope                                                                     
+                                                                                                           
+           32┆ const preTax = eval(req.body.preTax);
+   
+   ❯❯❱ javascript.lang.security.audit.code-string-concat.code-string-concat
+          ❰❰ Blocking ❱❱
+          Found data from an Express or Next web request flowing to `eval`. If this data is user-controllable
+          this can lead to execution of arbitrary system commands in the context of your application process.
+          Avoid `eval` whenever possible.                                                                    
+          Details: https://sg.run/96Yk                                                                       
+                                                                                                             
+           32┆ const preTax = eval(req.body.preTax);
+   
+    ❯❱ javascript.browser.security.eval-detected.eval-detected
+          ❰❰ Blocking ❱❱
+          Detected the use of eval(). eval() can be dangerous if used to evaluate dynamic content. If this 
+          content can be input from outside the program, this may be a code injection vulnerability. Ensure
+          evaluated content is not definable by external sources.                                          
+          Details: https://sg.run/7ope                                                                     
+                                                                                                           
+           33┆ const afterTax = eval(req.body.afterTax);
+   
+   ❯❯❱ javascript.lang.security.audit.code-string-concat.code-string-concat
+          ❰❰ Blocking ❱❱
+          Found data from an Express or Next web request flowing to `eval`. If this data is user-controllable
+          this can lead to execution of arbitrary system commands in the context of your application process.
+          Avoid `eval` whenever possible.                                                                    
+          Details: https://sg.run/96Yk                                                                       
+                                                                                                             
+           33┆ const afterTax = eval(req.body.afterTax);
+   
+    ❯❱ javascript.browser.security.eval-detected.eval-detected
+          ❰❰ Blocking ❱❱
+          Detected the use of eval(). eval() can be dangerous if used to evaluate dynamic content. If this 
+          content can be input from outside the program, this may be a code injection vulnerability. Ensure
+          evaluated content is not definable by external sources.                                          
+          Details: https://sg.run/7ope                                                                     
+                                                                                                           
+           34┆ const roth = eval(req.body.roth);
+   
+   ❯❯❱ javascript.lang.security.audit.code-string-concat.code-string-concat
+          ❰❰ Blocking ❱❱
+          Found data from an Express or Next web request flowing to `eval`. If this data is user-controllable
+          this can lead to execution of arbitrary system commands in the context of your application process.
+          Avoid `eval` whenever possible.                                                                    
+          Details: https://sg.run/96Yk                                                                       
+                                                                                                             
+           34┆ const roth = eval(req.body.roth);
+
+                
+                
+┌──────────────┐
+│ Scan Summary │
+└──────────────┘
+✅ Scan completed successfully.
+ • Findings: 6 (6 blocking)
+ • Rules run: 192
+ • Targets scanned: 4
+ • Parsed lines: ~100.0%
+ • No ignore information available
+Ran 192 rules on 4 files: 6 findings.
+💎 Missed out on 1856 pro rules since you aren't logged in!
+⚡ Supercharge Semgrep OSS when you create a free account at https://sg.run/rules.
