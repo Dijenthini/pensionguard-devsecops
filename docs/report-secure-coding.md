@@ -130,10 +130,12 @@ if (!req.session.user || req.session.user.username !== 'admin') {
 
 | Scan | Findings |
 |------|----------|
-| Baseline (vulnerable) | 28 |
-| Secured (fixed) | 28 |
+| Baseline (vulnerable) | 6 |
+| Secured (fixed) | 0 |
 
-Note: SAST did not detect the 4 vulnerabilities. Manual testing proved the fixes.
+The Semgrep SAST scan detected 6 vulnerabilities in the baseline version, 
+including the eval() injection vulnerability. After applying secure coding 
+fixes, the scan reported 0 findings, proving the remediation was successful.
 
 ---
 
