@@ -109,3 +109,14 @@
 | Minimal image | ✅ Applied |
 | Database internal | ✅ Applied |
 | Resource limits | ✅ Applied |
+
+## Fix Status (Updated Day 4)
+
+| Vulnerability | File | Status | Evidence |
+|---------------|------|--------|----------|
+| V1 - eval Injection | app/routes/contributions.js | ✅ Fixed | EVID-18 |
+| V2 - Stored XSS | app/routes/profile.js | ✅ Fixed | EVID-19 |
+| V3 - IDOR | app/routes/allocations.js | ✅ Fixed | EVID-20 |
+| V4 - Benefits Access | app/routes/benefits.js | ✅ Fixed | EVID-21 |
+
+All 4 vulnerabilities have been remediated by Member 3 and reviewed by the team.
