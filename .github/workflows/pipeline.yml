@@ -1,4 +1,4 @@
-name: Security Pipeline
+name: Pipeline
 
 on:
   push:
@@ -8,8 +8,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Run test
-        run: echo "Security pipeline is working!"
+      - name: Run
+        run: echo "Hello from pipeline!"
