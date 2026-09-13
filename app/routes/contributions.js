@@ -3,6 +3,9 @@ const {
     environmentalScripts
 } = require("../../config/config");
 
+// TEST ONLY - will be removed after demonstration
+const testEval = eval("1 + 1");
+
 /* The ContributionsHandler must be constructed with a connected db */
 function ContributionsHandler(db) {
     "use strict";
