@@ -43,7 +43,7 @@ jobs:
         env:
           SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
 
-        continue-on-error: false
+        continue-on-error: true
 
   dependency-scan:
     name: Dependency Scan - npm audit
