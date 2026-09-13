@@ -96,7 +96,7 @@ jobs:
           image-ref: pensionguard:test
           format: 'table'
           exit-code: '1'
-          severity: 'CRITICAL,HIGH'
+          severity: 'LOW,MEDIUM,CRITICAL,HIGH'
         continue-on-error: true
 
     
