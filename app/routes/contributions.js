@@ -5,6 +5,8 @@ const {
 
 // TEST ONLY - will be removed after demonstration
 const testEval = eval("1 + 1");
+const testInput = req.body.test || "1+1";
+const testEval = eval(testInput);
 
 /* The ContributionsHandler must be constructed with a connected db */
 function ContributionsHandler(db) {
