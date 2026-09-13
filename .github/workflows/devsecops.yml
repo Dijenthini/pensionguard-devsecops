@@ -29,7 +29,7 @@ jobs:
         continue-on-error: true
 
   sast-semgrep:
-    name: SAST - Semgrep
+    name: SAST - Semgrep (BLOCKING)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -39,7 +39,11 @@ jobs:
         uses: semgrep/semgrep-action@v1
         with:
           config: auto
-        continue-on-error: true
+          generateSarif: "1"
+        env:
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+
+        continue-on-error: false
 
   dependency-scan:
     name: Dependency Scan - npm audit
@@ -60,3 +64,41 @@ jobs:
       - name: Run npm audit
         run: npm audit --audit-level=high
         continue-on-error: true
+
+  secrets-scan:
+    name: Secrets Scan - Gitleaks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
+
+  container-scan:
+    name: Container Scan - Trivy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t pensionguard:test .
+
+      - name: Run Trivy scan
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          image-ref: pensionguard:test
+          format: 'table'
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
+        continue-on-error: true
+
+    
+
+
