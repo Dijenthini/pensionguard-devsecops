@@ -97,15 +97,49 @@ Eight threats were identified across six STRIDE categories:
 
 ## 8. Evidence References
 
-| Threat | Exploit Evidence | Fix Evidence |
-|--------|------------------|--------------|
-| T2 | EVID-17-vuln5-benefits-access.png | EVID-21-vuln4-fix.png |
-| T3 | EVID-14-vuln2-xss-exploit.png | EVID-19-vuln2-fix.png |
-| T5 | EVID-15-vuln3-idor-exploit.png | EVID-20-vuln3-fix.png |
-| T8 | EVID-13-vuln1-eval-exploit.png | EVID-18-vuln1-fix.png |
+### 8.1 Exploit Evidence (Before Fix)
 
-## 9. Conclusion
+| Threat | Evidence | File |
+|--------|----------|------|
+| T2 | Benefits exploit | EVID-17-vuln5-benefits-access.png |
+| T3 | XSS exploit | EVID-14-vuln2-xss-exploit.png |
+| T5 | IDOR exploit | EVID-15-vuln3-idor-exploit.png |
+| T8 | eval exploit | EVID-13-vuln1-eval-exploit.png |
+
+### 8.2 Fix Evidence (After Fix)
+
+| Threat | Evidence | File |
+|--------|----------|------|
+| T2 | Benefits fixed | EVID-21-vuln4-fix.png |
+| T3 | XSS fixed | EVID-19-vuln2-fix.png |
+| T5 | IDOR fixed | EVID-20-vuln3-fix.png |
+| T8 | eval fixed | EVID-18-vuln1-fix.png |
+
+### 8.3 Pipeline Evidence
+
+| Evidence | File | What It Shows |
+|----------|------|---------------|
+| EVID-23 | pipeline/EVID-23-pipeline-basic.png | Basic pipeline (3 jobs) |
+| EVID-24 | pipeline/EVID-24-pipeline-red-run.png | Pipeline FAILED (blocking gate) |
+| EVID-25 | pipeline/EVID-25-pipeline-green-run.png | Pipeline PASSED |
+
+## 9. Pipeline Integration
+
+The threat model is integrated with the CI/CD pipeline:
+
+| Pipeline Gate | Related Threats |
+|---------------|-----------------|
+| SAST (Semgrep) | T3, T8 (injection) |
+| Dependency Scan | Supply chain |
+| Secrets Scan | Credential exposure |
+| Container Scan | Image vulnerabilities |
+
+*Blocking Gate:* SAST (Semgrep) detects eval injection and blocks the pipeline.
+
+## 10. Conclusion
 
 The STRIDE threat modeling exercise identified eight threats across the PensionGuard application. The four highest-priority threats (T2, T3, T5, T8) have been successfully remediated through secure coding fixes, verified by exploit-fix-retest evidence.
 
-The remaining four threats will be addressed through pipeline controls and future improvements. This demonstrates the value of threat modeling in identifying security risks early and prioritizing remediation efforts.
+The remaining four threats (T1, T4, T6, T7) will be addressed through pipeline controls and future improvements.
+
+This demonstrates the value of threat modeling in identifying security risks early and prioritizing remediation efforts.
