@@ -2,6 +2,30 @@
 # Date: 2026-09-19
 # Created by: Member 2
 
+## Pipeline Status Integration
+
+The threat model has been integrated with the CI/CD pipeline status:
+
+| Threat | Status | Pipeline Gate |
+|--------|--------|---------------|
+| T1 - Weak Authentication | ⏳ Pending | Rate limiting (planned) |
+| T2 - Benefits Access | ✅ Fixed | SAST, Container Scan |
+| T3 - Stored XSS | ✅ Fixed | SAST |
+| T4 - No Audit Logs | ⏳ Pending | Logging (planned) |
+| T5 - IDOR | ✅ Fixed | SAST |
+| T6 - Error Disclosure | ⏳ Pending | Custom errors (planned) |
+| T7 - DoS | ⏳ Pending | Rate limiting (planned) |
+| T8 - eval Injection | ✅ Fixed | SAST (blocking) |
+
+## Pipeline Security Gates
+
+| Gate | Purpose | Blocking? |
+|------|---------|-----------|
+| SAST (Semgrep) | Detect code vulnerabilities | ✅ Yes |
+| Dependency Scan | Find vulnerable dependencies | No |
+| Secrets Scan | Detect exposed secrets | No |
+| Container Scan | Scan Docker image | No |
+
 ## Vulnerability Evidence Mapping
 
 | Threat | Vulnerability File | Exploit Evidence | Fix Evidence |
