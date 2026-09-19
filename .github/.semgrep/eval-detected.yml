@@ -1,0 +1,9 @@
+rules:
+  - id: eval-detected
+    patterns:
+      - pattern: eval(...)
+    message: "Detected eval() - potential code injection vulnerability"
+    languages:
+      - javascript
+      - typescript
+    severity: ERROR

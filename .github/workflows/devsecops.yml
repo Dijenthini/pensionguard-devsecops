@@ -40,7 +40,7 @@ jobs:
        
       - name: Run Semgrep SAST
         run: |
-          semgrep scan --config "r/javascript.lang.security.audit.eval-detected" --error
+          semgrep scan --config .semgrep/eval-detected.yml --error
 
         continue-on-error: false
         env:
