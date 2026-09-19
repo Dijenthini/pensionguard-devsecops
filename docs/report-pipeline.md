@@ -1,77 +1,83 @@
-# CI/CD Pipeline Section - Draft
-# Date: 2026-09-13
+# CI/CD Pipeline Section - Report
+# Date: 2026-09-14
 # Member 4 - Pipeline/Evidence Lead
 
 ## 1. Introduction
 
-The PensionGuard project uses **GitHub Actions** to implement a complete DevSecOps pipeline with **five security gates**. The pipeline runs automatically on every push and pull request, ensuring that no insecure code reaches the main branch.
-
----
+The PensionGuard project uses **GitHub Actions** to implement a comprehensive DevSecOps pipeline with **five automated security gates**. The pipeline runs on every push and pull request, ensuring that no insecure code reaches the main branch.
 
 ## 2. Pipeline Architecture
 
-The pipeline consists of five jobs:
+The pipeline consists of five jobs running in parallel:
 
 | Job | Tool | Blocking? | Purpose |
 |-----|------|-----------|---------|
-| Build & Test | npm | No | Verify code builds successfully |
+| Build & Test | npm | No | Verify code builds and tests pass |
 | SAST | Semgrep | ✅ **BLOCKING** | Detect code vulnerabilities |
 | Dependency Scan | npm audit | No | Find vulnerable dependencies |
 | Secrets Scan | Gitleaks | No | Detect exposed secrets |
 | Container Scan | Trivy | No | Scan Docker image |
 
----
+## 3. Security Gates Detail
 
-## 3. Security Gates
+### 3.1 SAST - Semgrep (BLOCKING GATE)
 
-### 3.1 SAST (Semgrep) - BLOCKING GATE
-
-- **Tool:** Semgrep
-- **Config:** `r/javascript.lang.security.audit.eval-detected`
+- **Tool:** Semgrep Community Edition
+- **Rule:** `r/javascript.lang.security.audit.eval-detected`
 - **Blocking:** ✅ Yes (`continue-on-error: false`)
-- **Evidence:** EVID-24 (RED run) and EVID-25 (GREEN run)
+- **Exit behavior:** Non-zero exit code blocks pipeline
 
-This gate **blocks the pipeline** if `eval()` is detected in the code, preventing code injection vulnerabilities.
+**Why blocking:** This gate prevents code injection vulnerabilities from entering the codebase.
+
+**Evidence:**
+- RED run: EVID-24-pipeline-red-run.png (44 findings, exit code 1)
+- GREEN run: EVID-25-pipeline-green-run.png (0 findings, pass)
 
 ### 3.2 Dependency Scanning
 
 - **Tool:** npm audit
-- **Severity:** HIGH
-- **Report:** Saves findings to artifact
+- **Severity threshold:** HIGH
+- **Report:** JSON output saved to artifacts
 
 ### 3.3 Secrets Scanning
 
 - **Tool:** Gitleaks
-- **Scope:** Full git history
-- **Detection:** API keys, passwords, tokens
+- **Scope:** Full git history (`fetch-depth: 0`)
+- **Detection:** API keys, passwords, tokens, private keys
 
 ### 3.4 Container Scanning
 
 - **Tool:** Trivy
-- **Severity:** CRITICAL, HIGH
 - **Image:** `pensionguard:test`
-
----
+- **Severity:** CRITICAL, HIGH
 
 ## 4. Blocking Gate Demonstration
 
 ### 4.1 RED Run
 
-The pipeline was deliberately made to fail by introducing an `eval()` in `contributions.js`. The SAST gate detected this and blocked the pipeline.
+To demonstrate the blocking gate, an `eval()` was temporarily introduced in `app/routes/contributions.js`.
 
-**Evidence:** EVID-24-pipeline-red-run.png (44 findings, exit code 1)
+**Result:** 
+- SAST detected eval
+- Pipeline FAILED
+- 44 findings (44 blocking)
+- Exit code 1
+
+**Evidence:** EVID-24-pipeline-red-run.png, EVID-24b-sast-failure-details.png
 
 ### 4.2 GREEN Run
 
-After removing the test vulnerability, the pipeline passed successfully.
+After removing the test vulnerability, the pipeline passed.
+
+**Result:**
+- All 5 jobs passed
+- Pipeline completed in 1m 17s
 
 **Evidence:** EVID-25-pipeline-green-run.png
 
----
-
 ## 5. Secrets Management
 
-All secrets are managed through **GitHub Actions encrypted secrets**. No credentials are hardcoded or committed to the repository.
+All secrets are managed through **GitHub Actions encrypted secrets**:
 
 | Secret | Purpose |
 |--------|---------|
@@ -79,19 +85,35 @@ All secrets are managed through **GitHub Actions encrypted secrets**. No credent
 | `DB_PASSWORD` | Database password |
 | `SEMGREP_APP_TOKEN` | Semgrep API token |
 
-Secrets are injected at runtime via `${{ secrets.NAME }}` and are never visible in logs or code.
+**Provisioning:**
+- CI/CD: `${{ secrets.NAME }}` injection
+- Application: `process.env.NAME`
+- No hardcoded credentials anywhere
 
----
+## 6. Workflow Configuration
 
-## 6. Summary
+**File:** `.github/workflows/devsecops.yml`
+
+**Triggers:**
+- `push` to master, main, demo/*
+- `pull_request` to master, main
+- `workflow_dispatch` (manual)
+
+**Actions used:**
+- `actions/checkout@v4`
+- `actions/setup-node@v4`
+- `aquasecurity/trivy-action@master`
+- `gitleaks/gitleaks-action@v2`
+
+## 7. Summary
 
 | Metric | Value |
 |--------|-------|
 | Total Jobs | 5 |
 | Blocking Gates | 1 (SAST) |
-| Scans Run per Push | 5 |
+| Security Tools | 5 (npm, Semgrep, npm audit, Gitleaks, Trivy) |
 | Secrets Exposed | 0 |
 | RED Run Captured | ✅ Yes |
 | GREEN Run Captured | ✅ Yes |
 
-The pipeline demonstrates a complete DevSecOps workflow with automated security controls integrated at every stage.
+The pipeline demonstrates a complete DevSecOps workflow with automated security controls integrated at every stage of the software delivery lifecycle.
