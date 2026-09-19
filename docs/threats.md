@@ -38,7 +38,8 @@
 - **Likelihood:** 3 (Possible)
 - **Impact:** 4 (Major)
 - **Risk Score:** 12 (HIGH)
- 
+- **Status:** ⏳ PENDING
+
 ---
  
 ## Threat #2: Broken Access Control - Benefits Page (Elevation of Privilege)
@@ -54,6 +55,9 @@
 - *Impact:* 3 (Moderate)
 - *Risk Score:* 9 (MEDIUM)
 - **Evidence:** EVID-17-vuln5-benefits-access.png (Exploit demonstrated by Member 3)
+- **Status:** ✅ FIXED
+- **Fix Evidence:** EVID-21
+
 ---
  
 ## Threat #3: Stored XSS (Tampering)
@@ -70,6 +74,8 @@
 - **Impact:** 3 (Moderate)
 - **Risk Score:** 9 (MEDIUM)
 - **Evidence:** EVID-14-vuln2-xss-exploit.png (Exploit demonstrated by Member 3)
+- **Status:** ✅ FIXED
+- **Fix Evidence:** EVID-19
 ---
  
 ## Threat #4: No Audit Logs (Repudiation)
@@ -85,7 +91,7 @@
 - **Likelihood:** 3 (Possible)
 - **Impact:** 2 (Minor)
 - **Risk Score:** 6 (MEDIUM)
- 
+- **Status:** ⏳ PENDING
 ---
  
 ## Threat #5: Insecure Direct Object Reference (Information Disclosure)
@@ -102,6 +108,8 @@
 - **Impact:** 4 (Major)
 - **Risk Score:** 16 (HIGH)
 - **Evidence:** EVID-15-vuln3-idor-exploit.png (Exploit demonstrated by Member 3)
+- **Status:** ✅ FIXED
+- **Fix Evidence:** EVID-20
 ---
  
 ## Threat #6: Error Message Disclosure (Information Disclosure)
@@ -117,7 +125,7 @@
 - **Likelihood:** 2 (Unlikely)
 - **Impact:** 2 (Minor)
 - **Risk Score:** 4 (MEDIUM)
- 
+- **Status:** ⏳ PENDING
 ---
  
 ## Threat #7: Denial of Service (Resource Exhaustion)
@@ -133,7 +141,7 @@
 - **Likelihood:** 2 (Unlikely)
 - **Impact:** 3 (Moderate)
 - **Risk Score:** 6 (MEDIUM)
- 
+- **Status:** ⏳ PENDING 
 ---
  
 ## Threat #8: IDOR - Allocations Access (Information Disclosure)
@@ -149,4 +157,6 @@
 - *Impact:* 4 (Major)
 - *Risk Score:* 16 (HIGH)
 - **Evidence:** EVID-15-vuln3-idor-exploit.png (Exploit demonstrated by Member 3)
+- **Status:** ✅ FIXED
+- **Fix Evidence:** EVID-15
 ---
