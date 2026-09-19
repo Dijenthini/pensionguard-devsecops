@@ -1,12 +1,10 @@
-# Secure Coding Section - Draft
-# Date: 2026-09-10
+# Secure Coding Section - Report
+# Date: 2026-09-19
 # Member 3 - Secure Coding Lead
 
 ## 1. Introduction
 
-Four vulnerabilities were identified and remediated in the PensionGuard application (OWASP NodeGoat). Each vulnerability was demonstrated working before the fix and verified blocked after the fix.
-
----
+Four vulnerabilities were identified and remediated in the PensionGuard application (OWASP NodeGoat). Each vulnerability was demonstrated working before the fix and verified blocked after the fix, with all evidence captured.
 
 ## 2. Vulnerability 1: Server-Side JavaScript Injection (eval)
 
@@ -20,8 +18,9 @@ const roth = eval(req.body.roth);
 This allowed attackers to execute arbitrary JavaScript code on the server.
 
 ### 2.2 Exploit
-Payload: `require('child_process').execSync('echo HACKED')`
-Result: Command execution on server
+**Payload:** `require('child_process').execSync('echo HACKED')`
+**Result:** Command execution on server
+**Evidence:** EVID-13-vuln1-eval-exploit.png
 
 ### 2.3 Fix
 Replaced `eval()` with safe numeric parsing:
@@ -38,7 +37,7 @@ const roth = safeParseNumber(req.body.roth);
 
 ### 2.4 Verification
 - ✅ Exploit blocked: "Invalid contribution percentages"
-- ✅ Evidence: EVID-18
+- ✅ Evidence: EVID-18-vuln1-fix.png
 
 ---
 
@@ -48,8 +47,9 @@ const roth = safeParseNumber(req.body.roth);
 User-supplied website URL was encoded for HTML context but used in a URL attribute context.
 
 ### 3.2 Exploit
-Payload: `javascript:alert('XSS')`
-Result: Script execution when profile viewed
+**Payload:** `javascript:alert('XSS')`
+**Result:** Script execution when profile viewed
+**Evidence:** EVID-14-vuln2-xss-exploit.png
 
 ### 3.3 Fix
 Added URL scheme validation:
@@ -69,7 +69,7 @@ if (req.body.website && !validateUrl(req.body.website)) {
 
 ### 3.4 Verification
 - ✅ Exploit blocked: XSS payload rejected
-- ✅ Evidence: EVID-19
+- ✅ Evidence: EVID-19-vuln2-fix.png
 
 ---
 
@@ -82,8 +82,9 @@ const { userId } = req.params;  // Vulnerable
 ```
 
 ### 4.2 Exploit
-URL: `/allocations/2` (while logged in as user1)
-Result: Access to user2's data
+**URL:** `/allocations/2` (while logged in as user1)
+**Result:** Access to user2's data
+**Evidence:** EVID-15-vuln3-idor-exploit.png
 
 ### 4.3 Fix
 Changed to use session userId:
@@ -93,7 +94,7 @@ const userId = req.session.userId;  // Secure
 
 ### 4.4 Verification
 - ✅ Exploit blocked: Cannot access other user's data
-- ✅ Evidence: EVID-20
+- ✅ Evidence: EVID-20-vuln3-fix.png
 
 ---
 
@@ -109,8 +110,9 @@ this.displayBenefits = (req, res, next) => {
 ```
 
 ### 5.2 Exploit
-URL: `/benefits` (while logged in as user1)
-Result: Access to admin-only benefits data
+**URL:** `/benefits` (while logged in as user1)
+**Result:** Access to admin-only benefits data
+**Evidence:** EVID-17-vuln5-benefits-access.png
 
 ### 5.3 Fix
 Added server-side RBAC check:
@@ -122,7 +124,7 @@ if (!req.session.user || req.session.user.username !== 'admin') {
 
 ### 5.4 Verification
 - ✅ Exploit blocked: "Access denied. Admin only."
-- ✅ Evidence: EVID-21
+- ✅ Evidence: EVID-21-vuln4-fix.png
 
 ---
 
@@ -133,19 +135,33 @@ if (!req.session.user || req.session.user.username !== 'admin') {
 | Baseline (vulnerable) | 6 |
 | Secured (fixed) | 0 |
 
-The Semgrep SAST scan detected 6 vulnerabilities in the baseline version, 
-including the eval() injection vulnerability. After applying secure coding 
-fixes, the scan reported 0 findings, proving the remediation was successful.
+The Semgrep SAST scan detected 6 vulnerabilities in the baseline version (all related to eval injection). After applying secure coding fixes, the scan reported 0 findings, proving the remediation was successful.
+
+**Evidence:** EVID-22-sast-after.png
 
 ---
 
-## 7. Summary
+## 7. Regression Tests
 
-| Vulnerability | Status | Evidence |
-|---------------|--------|----------|
-| eval Injection | ✅ Fixed | EVID-18 |
-| Stored XSS | ✅ Fixed | EVID-19 |
-| IDOR | ✅ Fixed | EVID-20 |
-| Benefits Access | ✅ Fixed | EVID-21 |
+Regression tests were added to prevent reintroduction:
+- `test/security/regression.test.js`
 
-All 4 vulnerabilities have been successfully remediated.
+| Test | Purpose |
+|------|---------|
+| eval injection prevention | Ensures eval is not used |
+| XSS prevention | Ensures URL validation works |
+| IDOR prevention | Ensures session auth is used |
+| Benefits access | Ensures RBAC is enforced |
+
+---
+
+## 8. Summary
+
+| Vulnerability | Status | Exploit Evidence | Fix Evidence |
+|---------------|--------|------------------|--------------|
+| eval Injection | ✅ Fixed | EVID-13 | EVID-18 |
+| Stored XSS | ✅ Fixed | EVID-14 | EVID-19 |
+| IDOR | ✅ Fixed | EVID-15 | EVID-20 |
+| Benefits Access | ✅ Fixed | EVID-17 | EVID-21 |
+
+All 4 vulnerabilities have been successfully remediated and verified. SAST findings dropped from 6 to 0.
