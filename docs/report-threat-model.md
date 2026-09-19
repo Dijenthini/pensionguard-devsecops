@@ -49,7 +49,7 @@ Eight threats were identified across six STRIDE categories:
 | T5 | IDOR (Allocations) | I | 4 | 4 | 16 | HIGH | ✅ Fixed |
 | T6 | Error Disclosure | I | 2 | 2 | 4 | MEDIUM | ⏳ Pending |
 | T7 | Denial of Service | D | 2 | 3 | 6 | MEDIUM | ⏳ Pending |
-| T8 | IDOR | I | 4 | 4 | 16 | HIGH | ✅ Fixed |
+| T8 | eval Injection | T/E | 4 | 5 | 20 | CRITICAL | ✅ Fixed |
 
 ## 5. Risk Assessment
 
@@ -67,8 +67,8 @@ Eight threats were identified across six STRIDE categories:
 
 | Level | Count | Threats |
 |-------|-------|---------|
-| Critical (20-25) | 0 | None |
-| High (12-19) | 3 | T1, T5, T8 |
+| Critical (20-25) | 1 | T8 |
+| High (12-19) | 2 | T1, T5 |
 | Medium (5-11) | 5 | T2, T3, T4, T6, T7 |
 | Low (1-4) | 0 | None |
 
@@ -79,7 +79,7 @@ Eight threats were identified across six STRIDE categories:
 | T2 - Benefits Access | RBAC | app/routes/benefits.js | ✅ Applied |
 | T3 - Stored XSS | URL validation | app/routes/profile.js | ✅ Applied |
 | T5 - IDOR | Session-based auth | app/routes/allocations.js | ✅ Applied |
-| T8 - IDOR | Session-based auth | app/routes/allocations.js | ✅ Applied |
+| T8 - eval Injection | Numeric validation | app/routes/contributions.js | ✅ Applied |
 | T1 - Weak Auth | Rate limiting | Middleware | ⏳ Planned |
 | T4 - No Audit Logs | Audit logging | Middleware | ⏳ Planned |
 | T6 - Error Disclosure | Custom errors | app/routes/error.js | ⏳ Planned |
@@ -89,14 +89,23 @@ Eight threats were identified across six STRIDE categories:
 
 | OWASP Category | Threats |
 |----------------|---------|
-| A01: Broken Access Control | T2, T5, T8 |
+| A01: Broken Access Control | T2, T5 |
 | A02: Security Misconfiguration | T6, T7 |
-| A05: Injection | T3 |
+| A05: Injection | T3, T8 |
 | A07: Authentication Failures | T1 |
 | A09: Logging Failures | T4 |
 
-## 8. Conclusion
+## 8. Evidence References
 
-The STRIDE threat modeling exercise identified eight threats across the PensionGuard application. The four highest-priority threats (T2, T3, T5, T8) have been successfully remediated through secure coding fixes, verified by exploit-fix-retest evidence (EVID-15, 19, 20, 21). The remaining four threats will be addressed through pipeline controls and future improvements.
+| Threat | Exploit Evidence | Fix Evidence |
+|--------|------------------|--------------|
+| T2 | EVID-17-vuln5-benefits-access.png | EVID-21-vuln4-fix.png |
+| T3 | EVID-14-vuln2-xss-exploit.png | EVID-19-vuln2-fix.png |
+| T5 | EVID-15-vuln3-idor-exploit.png | EVID-20-vuln3-fix.png |
+| T8 | EVID-13-vuln1-eval-exploit.png | EVID-18-vuln1-fix.png |
 
-This demonstrates the value of threat modeling in identifying security risks early and prioritizing remediation efforts.
+## 9. Conclusion
+
+The STRIDE threat modeling exercise identified eight threats across the PensionGuard application. The four highest-priority threats (T2, T3, T5, T8) have been successfully remediated through secure coding fixes, verified by exploit-fix-retest evidence.
+
+The remaining four threats will be addressed through pipeline controls and future improvements. This demonstrates the value of threat modeling in identifying security risks early and prioritizing remediation efforts.

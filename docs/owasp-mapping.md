@@ -28,15 +28,15 @@
 | T5 | IDOR (Allocations) | A01: Broken Access Control | Access other users' data via URL |
 | T6 | Error Disclosure | A02: Security Misconfiguration | Verbose errors expose system details |
 | T7 | DoS | A02: Security Misconfiguration | No rate limiting, resource exhaustion |
-| T8 | IDOR | A01: Broken Access Control | Access other users' data via URL |
+| T8 | Server-Side JS Injection (eval) | A05: Injection | Malicious code executed via eval() |
 
 ## Summary by OWASP Category
 
 | OWASP Category | Count | Threats |
 |----------------|-------|---------|
-| A01: Broken Access Control | 3 | T2, T5, T8 |
+| A01: Broken Access Control | 2 | T2, T5 |
 | A02: Security Misconfiguration | 2 | T6, T7 |
-| A05: Injection | 1 | T3 |
+| A05: Injection | 2 | T3, T8 |
 | A07: Authentication Failures | 1 | T1 |
 | A09: Logging Failures | 1 | T4 |
 
@@ -46,6 +46,6 @@
 |----------------|----------|
 | A01: Broken Access Control | RBAC, session-based auth, server-side checks |
 | A02: Security Misconfiguration | Custom error handling, rate limiting |
-| A05: Injection | Output encoding, input validation |
+| A05: Injection | Output encoding, input validation, numeric parsing |
 | A07: Authentication Failures | Rate limiting, strong passwords |
 | A09: Logging Failures | Audit logging (planned) |
