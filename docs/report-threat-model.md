@@ -1,75 +1,102 @@
-# Threat Model Section - Draft
-# Date: 2026-09-09
+# Threat Model Section - Report
+# Date: 2026-09-19
+# Member 2 - Threat Modeling Lead
 
-## Introduction
+## 1. Introduction
 
-The PensionGuard application (OWASP NodeGoat) was analyzed using the STRIDE threat modeling methodology. Eight threats were identified across six STRIDE categories.
+The PensionGuard application (OWASP NodeGoat) was analyzed using the *STRIDE threat modeling methodology*. This section presents the assets, actors, trust boundaries, identified threats, risk assessment, and applied controls.
 
-## Threat Model Summary
+## 2. Assets and Actors
 
-| Category | Number of Threats | Examples |
-|----------|-------------------|----------|
-| Spoofing (S) | 1 | Weak Authentication (T1) |
-| Tampering (T) | 1 | Stored XSS (T3) |
-| Repudiation (R) | 1 | No Audit Logs (T4) |
-| Information Disclosure (I) | 3 | IDOR (T5, T8), Error Disclosure (T6) |
-| Denial of Service (D) | 1 | Resource Exhaustion (T7) |
-| Elevation of Privilege (E) | 1 | Broken Access Control - Benefits (T2) |
+### 2.1 Assets
 
-## Risk Assessment Results
+| Asset | Description | Sensitivity |
+|-------|-------------|-------------|
+| User credentials | Usernames, passwords | High |
+| Session cookies | Authentication tokens | High |
+| Personal profiles | Name, email, SSN | High |
+| Financial data | Retirement allocations, contributions | High |
+| Admin functions | Benefits management | High |
+| Source code | Application logic | Medium |
 
-| Risk Level | Number of Threats |
-|------------|-------------------|
-| Critical (20-25) | 0 |
-| High (12-19) | 3 |
-| Medium (5-11) | 4 |
-| Low (1-4) | 1 |
+### 2.2 Actors
 
-## Threat-to-Control Mapping
+| Actor | Description |
+|-------|-------------|
+| Unauthenticated visitor | External user with no account |
+| Regular user | Authenticated non-admin |
+| Administrator | Authenticated admin |
+| Malicious insider | Privileged user acting badly |
 
-| Threat | Control | Implementation Location |
-|--------|---------|------------------------|
-| Broken Access Control (Benefits) | RBAC | routes/benefits.js |
-| Stored XSS | Output encoding | routes/profile.js |
-| IDOR | Session-based authorization | routes/allocations.js |
-| Weak Authentication | Rate limiting | routes/auth.js |
-| Error Disclosure | Custom error handling | routes/error.js |
+## 3. Trust Boundaries
 
-## OWASP Top 10:2025 Mapping
+| Boundary | Separates | Risk |
+|----------|-----------|------|
+| B1: Internet → Internal | User browser vs web app | Malicious input |
+| B2: App → Database | Web app vs MongoDB | Query injection |
+| B3: User → Admin | Regular vs admin | Privilege escalation |
 
-The identified threats were mapped to OWASP Top 10:2025 categories:
+## 4. STRIDE Threat Analysis
 
-| OWASP Category | Threats | Controls |
-|----------------|---------|----------|
-| A01: Broken Access Control | T2, T5, T8 | RBAC, session auth |
-| A03: Injection | T3 | Output encoding |
-| A05: Security Misconfiguration | T6, T7 | Error handling, rate limiting |
-| A07: Identification Failures | T1 | Rate limiting, strong passwords |
-| A09: Security Logging Failures | T4 | Audit logging |
+Eight threats were identified across six STRIDE categories:
 
----
+| ID | Threat | STRIDE | Likelihood | Impact | Score | Level | Status |
+|----|--------|--------|------------|--------|-------|-------|--------|
+| T1 | Weak Authentication | S | 3 | 4 | 12 | HIGH | ⏳ Pending |
+| T2 | Benefits Access | E | 3 | 3 | 9 | MEDIUM | ✅ Fixed |
+| T3 | Stored XSS | T | 3 | 3 | 9 | MEDIUM | ✅ Fixed |
+| T4 | No Audit Logs | R | 3 | 2 | 6 | MEDIUM | ⏳ Pending |
+| T5 | IDOR (Allocations) | I | 4 | 4 | 16 | HIGH | ✅ Fixed |
+| T6 | Error Disclosure | I | 2 | 2 | 4 | MEDIUM | ⏳ Pending |
+| T7 | Denial of Service | D | 2 | 3 | 6 | MEDIUM | ⏳ Pending |
+| T8 | IDOR | I | 4 | 4 | 16 | HIGH | ✅ Fixed |
 
-## Risk Treatment Summary
+## 5. Risk Assessment
 
-| Action | Threats |
-|--------|---------|
-| Mitigated (Applied) | T2, T3, T5, T8 |
-| Planned (Pending) | T1, T4, T6, T7 |
-| Accepted | None |
+### 5.1 5x5 Likelihood/Impact Matrix
 
----
+| Impact / Likelihood | 1 | 2 | 3 | 4 | 5 |
+|---------------------|---|---|---|---|---|
+| 5 - Severe | 5 | 10 | 15 | 20 | 25 |
+| 4 - Major | 4 | 8 | 12 | 16 | 20 |
+| 3 - Moderate | 3 | 6 | 9 | 12 | 15 |
+| 2 - Minor | 2 | 4 | 6 | 8 | 10 |
+| 1 - Negligible | 1 | 2 | 3 | 4 | 5 |
 
-## Threat Model Conclusion
+### 5.2 Risk Distribution
 
-The threat modeling exercise identified eight threats across six STRIDE categories and five OWASP Top 10:2025 categories. The highest priority threats (Critical and High) have been addressed through secure coding fixes (Member 3). Remaining Medium-level threats will be addressed through pipeline controls.
+| Level | Count | Threats |
+|-------|-------|---------|
+| Critical (20-25) | 0 | None |
+| High (12-19) | 3 | T1, T5, T8 |
+| Medium (5-11) | 5 | T2, T3, T4, T6, T7 |
+| Low (1-4) | 0 | None |
 
-Key improvements:
-- ✅ RBAC implemented for benefits page
-- ✅ Output encoding for XSS prevention
-- ✅ Session-based authorization for allocations
-- ⏳ Rate limiting (planned)
-- ⏳ Audit logging (planned)
+## 6. Threat-to-Control Mapping
 
-## Conclusion
+| Threat | Control | Location | Status |
+|--------|---------|----------|--------|
+| T2 - Benefits Access | RBAC | app/routes/benefits.js | ✅ Applied |
+| T3 - Stored XSS | URL validation | app/routes/profile.js | ✅ Applied |
+| T5 - IDOR | Session-based auth | app/routes/allocations.js | ✅ Applied |
+| T8 - IDOR | Session-based auth | app/routes/allocations.js | ✅ Applied |
+| T1 - Weak Auth | Rate limiting | Middleware | ⏳ Planned |
+| T4 - No Audit Logs | Audit logging | Middleware | ⏳ Planned |
+| T6 - Error Disclosure | Custom errors | app/routes/error.js | ⏳ Planned |
+| T7 - DoS | Rate limiting | Middleware | ⏳ Planned |
 
-The threat modeling exercise identified eight threats requiring mitigation. The highest priority threats (Critical and High) have been addressed through secure coding fixes implemented by Member 3. Remaining Medium-level threats will be addressed through pipeline controls and future improvements.
+## 7. OWASP Top 10:2025 Mapping
+
+| OWASP Category | Threats |
+|----------------|---------|
+| A01: Broken Access Control | T2, T5, T8 |
+| A02: Security Misconfiguration | T6, T7 |
+| A05: Injection | T3 |
+| A07: Authentication Failures | T1 |
+| A09: Logging Failures | T4 |
+
+## 8. Conclusion
+
+The STRIDE threat modeling exercise identified eight threats across the PensionGuard application. The four highest-priority threats (T2, T3, T5, T8) have been successfully remediated through secure coding fixes, verified by exploit-fix-retest evidence (EVID-15, 19, 20, 21). The remaining four threats will be addressed through pipeline controls and future improvements.
+
+This demonstrates the value of threat modeling in identifying security risks early and prioritizing remediation efforts.
