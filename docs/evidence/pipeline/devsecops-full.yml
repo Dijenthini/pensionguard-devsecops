@@ -35,15 +35,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install Semgrep
+        run: pip install semgrep
+       
       - name: Run Semgrep SAST
-        uses: semgrep/semgrep-action@v1
-        with:
-          config: auto
-          generateSarif: "1"
+        run: |
+          semgrep scan --config .semgrep/eval-detected.yml --error
+
+        continue-on-error: false
         env:
           SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
-
-        continue-on-error: true
 
   dependency-scan:
     name: Dependency Scan - npm audit
