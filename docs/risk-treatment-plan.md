@@ -22,7 +22,7 @@
 | T5 - IDOR | HIGH | ✅ Mitigated | Session auth (implemented) |
 | T6 - Error Disclosure | MEDIUM | Mitigate | Custom errors (planned) |
 | T7 - DoS | MEDIUM | Mitigate | Rate limiting (planned) |
-| T8 - IDOR | HIGH | ✅ Mitigated | Session auth (implemented) |
+| T8 - eval Injection | CRITICAL | ✅ Mitigated | Numeric validation (implemented) |
 
 ## Implementation Status
 
@@ -35,9 +35,9 @@
 
 | Risk Level | Before Fixes | After Fixes |
 |------------|--------------|-------------|
-| Critical | 0 | 0 |
-| High | 3 | 0 |
-| Medium | 4 | 4 |
-| Low | 1 | 4 |
+| Critical | 1 | 0 |
+| High | 2 | 0 |
+| Medium | 5 | 5 |
+| Low | 0 | 3 |
 
 *Note:* Pending Medium risks will be addressed through pipeline controls and future iterations.
