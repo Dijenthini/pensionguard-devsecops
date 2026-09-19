@@ -165,3 +165,29 @@ Regression tests were added to prevent reintroduction:
 | Benefits Access | ✅ Fixed | EVID-17 | EVID-21 |
 
 All 4 vulnerabilities have been successfully remediated and verified. SAST findings dropped from 6 to 0.
+
+## 9. Cross-Reference with Threat Model
+
+| Vulnerability | Related Threat | Threat Status |
+|---------------|----------------|---------------|
+| eval Injection | T8 - Server-Side JS Injection | ✅ Fixed |
+| Stored XSS | T3 - Stored XSS | ✅ Fixed |
+| IDOR | T5 - IDOR (Allocations) | ✅ Fixed |
+| Benefits Access | T2 - Benefits Access | ✅ Fixed |
+
+## 10. Evidence Mapping
+
+| Vulnerability | Exploit Evidence | Fix Evidence |
+|---------------|------------------|--------------|
+| eval Injection | EVID-13-vuln1-eval-exploit.png | EVID-18-vuln1-fix.png |
+| Stored XSS | EVID-14-vuln2-xss-exploit.png | EVID-19-vuln2-fix.png |
+| IDOR | EVID-15-vuln3-idor-exploit.png | EVID-20-vuln3-fix.png |
+| Benefits Access | EVID-17-vuln5-benefits-access.png | EVID-21-vuln4-fix.png |
+
+## 11. SAST Evidence
+
+| Scan | Findings | Evidence |
+|------|----------|----------|
+| Baseline (vulnerable) | 6 | baseline_only_fixed.txt |
+| Secured (fixed) | 0 | secured_only_fixed.txt |
+| Comparison | 6 → 0 | EVID-22-sast-after.png |
